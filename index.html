@@ -1,16 +1,935 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我的个人主页</title>
-    <style>
-        body { font-family: sans-serif; text-align: center; margin-top: 50px; }
-        h1 { color: #333; }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Academic homepage of Guipeng Lan — research, publications, editorial activities, and recruitment." />
+  <meta name="theme-color" content="#ffffff" />
+  <title>Guipeng Lan | Academic Homepage</title>
+
+  <style>
+    :root {
+      --text: #1d1d1f;
+      --secondary: #6e6e73;
+      --tertiary: #86868b;
+      --blue: #0071e3;
+      --blue-hover: #0077ed;
+      --bg: #ffffff;
+      --section: #f5f5f7;
+      --line: #d2d2d7;
+      --line-soft: #e8e8ed;
+      --max-width: 1080px;
+      --nav-height: 52px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      color: var(--text);
+      background: var(--bg);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
+                   "Helvetica Neue", Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+    button, input { font: inherit; }
+
+    /* ---------- Navigation ---------- */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      height: var(--nav-height);
+      background: rgba(255,255,255,.86);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      border-bottom: 1px solid rgba(0,0,0,.08);
+    }
+
+    .nav {
+      max-width: var(--max-width);
+      height: 100%;
+      margin: 0 auto;
+      padding: 0 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 28px;
+    }
+
+    .brand {
+      flex: 0 0 auto;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -.01em;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 25px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .nav-links::-webkit-scrollbar { display: none; }
+
+    .nav-links a {
+      position: relative;
+      white-space: nowrap;
+      color: #424245;
+      font-size: 12.5px;
+      transition: color .18s ease;
+    }
+    .nav-links a:hover,
+    .nav-links a.active { color: #000; }
+    .nav-links a.active::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -9px;
+      height: 1px;
+      background: #1d1d1f;
+    }
+
+    /* ---------- Shared layout ---------- */
+    .container {
+      width: min(var(--max-width), calc(100% - 44px));
+      margin: 0 auto;
+    }
+
+    section { scroll-margin-top: calc(var(--nav-height) + 24px); }
+
+    .section {
+      padding: 84px 0;
+    }
+
+    .section.gray { background: var(--section); }
+
+    .section-head {
+      margin-bottom: 34px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 28px;
+    }
+
+    .section-title {
+      margin: 0;
+      font-size: clamp(30px, 4.3vw, 44px);
+      line-height: 1.05;
+      letter-spacing: -.035em;
+      font-weight: 650;
+    }
+
+    .section-caption {
+      max-width: 440px;
+      margin: 0;
+      color: var(--secondary);
+      font-size: 15px;
+      text-align: right;
+    }
+
+    .link {
+      color: var(--blue);
+      transition: color .18s ease;
+    }
+    .link:hover { color: var(--blue-hover); text-decoration: underline; }
+
+    /* ---------- Hero / profile ---------- */
+    .hero {
+      padding: 82px 0 86px;
+      background: #fff;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 200px minmax(0, 1fr);
+      gap: 54px;
+      align-items: center;
+    }
+
+    .portrait-wrap {
+      width: 184px;
+      aspect-ratio: 1 / 1;
+      border-radius: 28px;
+      overflow: hidden;
+      background: #f0f0f2;
+      border: 1px solid var(--line-soft);
+    }
+
+    .portrait-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .portrait-fallback {
+      width: 100%;
+      height: 100%;
+      display: grid;
+      place-items: center;
+      color: #8e8e93;
+      font-size: 48px;
+      font-weight: 600;
+      letter-spacing: -.04em;
+    }
+
+    .hero-name {
+      margin: 0 0 8px;
+      font-size: clamp(42px, 6vw, 64px);
+      line-height: .98;
+      letter-spacing: -.045em;
+      font-weight: 670;
+    }
+
+    .hero-role {
+      margin: 0 0 22px;
+      color: var(--secondary);
+      font-size: clamp(18px, 2.3vw, 22px);
+      letter-spacing: -.015em;
+    }
+
+    .hero-intro {
+      max-width: 760px;
+      margin: 0 0 24px;
+      color: #424245;
+      font-size: 18px;
+      line-height: 1.6;
+    }
+
+    .profile-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 22px;
+      margin-top: 22px;
+    }
+
+    .profile-links a {
+      color: var(--blue);
+      font-size: 15px;
+      font-weight: 500;
+    }
+    .profile-links a::after { content: " ↗"; font-size: .82em; }
+    .profile-links a[href^="mailto"]::after { content: ""; }
+    .profile-links a:hover { text-decoration: underline; }
+
+    .research-line {
+      margin-top: 29px;
+      padding-top: 24px;
+      border-top: 1px solid var(--line-soft);
+      color: var(--secondary);
+      font-size: 14px;
+    }
+    .research-line strong { color: var(--text); font-weight: 600; }
+
+    /* ---------- News ---------- */
+    .news-list { border-top: 1px solid var(--line); }
+
+    .news-item {
+      display: grid;
+      grid-template-columns: 105px 1fr;
+      gap: 25px;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .news-date {
+      color: var(--secondary);
+      font-size: 14px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .news-text {
+      color: #333336;
+      font-size: 15.5px;
+    }
+
+    .news-type {
+      display: inline-block;
+      margin-right: 9px;
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .more-row {
+      margin-top: 22px;
+      display: flex;
+      justify-content: flex-start;
+    }
+
+    .text-button {
+      padding: 0;
+      border: 0;
+      color: var(--blue);
+      background: transparent;
+      cursor: pointer;
+      font-size: 15px;
+    }
+    .text-button:hover { text-decoration: underline; }
+
+    /* ---------- Publications ---------- */
+    .pub-tools {
+      margin-bottom: 28px;
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+
+    .pub-search {
+      width: min(340px, 100%);
+      padding: 9px 0 10px;
+      border: 0;
+      border-bottom: 1px solid var(--line);
+      outline: none;
+      color: var(--text);
+      background: transparent;
+      font-size: 14px;
+    }
+    .pub-search:focus { border-color: var(--text); }
+    .pub-search::placeholder { color: #98989d; }
+
+    .pub-filters {
+      display: flex;
+      gap: 18px;
+    }
+
+    .filter-btn {
+      padding: 0;
+      border: 0;
+      color: var(--tertiary);
+      background: transparent;
+      cursor: pointer;
+      font-size: 13px;
+    }
+    .filter-btn:hover,
+    .filter-btn.active { color: var(--text); }
+    .filter-btn.active { font-weight: 600; }
+
+    .publication-list {
+      border-top: 1px solid var(--line);
+    }
+
+    .publication {
+      display: grid;
+      grid-template-columns: 235px minmax(0, 1fr);
+      gap: 30px;
+      padding: 28px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .pub-image {
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      overflow: hidden;
+      border-radius: 13px;
+      background: #ececef;
+      border: 1px solid var(--line-soft);
+    }
+
+    .pub-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .35s cubic-bezier(.2,.7,.2,1);
+    }
+    .publication:hover .pub-image img { transform: scale(1.018); }
+
+    .pub-image-fallback {
+      width: 100%;
+      height: 100%;
+      display: grid;
+      place-items: center;
+      padding: 18px;
+      color: #8a8a8e;
+      background: linear-gradient(145deg, #f4f4f6, #e9e9ec);
+      text-align: center;
+      font-size: 13px;
+    }
+
+    .pub-kicker {
+      margin: 0 0 7px;
+      color: var(--secondary);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: .01em;
+    }
+
+    .pub-title {
+      margin: 0 0 9px;
+      font-size: 20px;
+      line-height: 1.32;
+      letter-spacing: -.018em;
+      font-weight: 620;
+    }
+
+    .pub-authors {
+      margin: 0 0 7px;
+      color: #4d4d51;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .pub-venue {
+      margin: 0 0 11px;
+      color: var(--secondary);
+      font-size: 14px;
+      font-style: italic;
+    }
+
+    .pub-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px 17px;
+    }
+    .pub-links a {
+      color: var(--blue);
+      font-size: 13.5px;
+      font-weight: 500;
+    }
+    .pub-links a:hover { text-decoration: underline; }
+
+    .empty-state {
+      padding: 34px 0;
+      color: var(--secondary);
+      font-size: 14px;
+    }
+
+    /* ---------- Special issues ---------- */
+    .si-list { border-top: 1px solid var(--line); }
+
+    .si-item {
+      display: grid;
+      grid-template-columns: 155px minmax(0, 1fr);
+      gap: 30px;
+      padding: 26px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .si-journal {
+      color: var(--secondary);
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .si-status {
+      margin-top: 5px;
+      color: var(--tertiary);
+      font-size: 12.5px;
+    }
+
+    .si-title {
+      margin: 0 0 9px;
+      font-size: 20px;
+      line-height: 1.35;
+      letter-spacing: -.018em;
+      font-weight: 620;
+    }
+
+    .si-team {
+      margin: 0 0 10px;
+      color: #4d4d51;
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .si-item a {
+      color: var(--blue);
+      font-size: 13.5px;
+      font-weight: 500;
+    }
+    .si-item a:hover { text-decoration: underline; }
+
+    /* ---------- Recruitment ---------- */
+    .recruit-grid {
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 54px;
+      align-items: start;
+    }
+
+    .recruit-lead {
+      margin: 0;
+      max-width: 700px;
+      color: #333336;
+      font-size: 20px;
+      line-height: 1.55;
+      letter-spacing: -.012em;
+    }
+
+    .recruit-meta {
+      border-top: 1px solid var(--line);
+    }
+
+    .recruit-row {
+      padding: 13px 0;
+      border-bottom: 1px solid var(--line);
+      color: var(--secondary);
+      font-size: 14px;
+    }
+    .recruit-row strong {
+      display: block;
+      margin-bottom: 3px;
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    /* ---------- Footer ---------- */
+    footer {
+      padding: 30px 0 42px;
+      border-top: 1px solid var(--line-soft);
+      color: var(--tertiary);
+      background: #fff;
+      font-size: 12px;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    /* ---------- Responsive ---------- */
+    @media (max-width: 760px) {
+      :root { --nav-height: 48px; }
+      .container { width: min(100% - 30px, var(--max-width)); }
+      .nav { padding: 0 15px; gap: 18px; }
+      .brand { font-size: 14px; }
+      .nav-links { gap: 19px; }
+      .nav-links a { font-size: 12px; }
+
+      .hero { padding: 58px 0 62px; }
+      .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 28px;
+      }
+      .portrait-wrap { width: 128px; border-radius: 22px; }
+      .hero-intro { font-size: 16.5px; }
+
+      .section { padding: 62px 0; }
+      .section-head {
+        display: block;
+        margin-bottom: 26px;
+      }
+      .section-caption {
+        margin-top: 12px;
+        max-width: none;
+        text-align: left;
+      }
+
+      .news-item {
+        grid-template-columns: 1fr;
+        gap: 4px;
+        padding: 14px 0;
+      }
+
+      .publication {
+        grid-template-columns: 1fr;
+        gap: 17px;
+        padding: 23px 0;
+      }
+      .pub-image { max-width: 520px; }
+
+      .si-item {
+        grid-template-columns: 1fr;
+        gap: 7px;
+      }
+
+      .recruit-grid {
+        grid-template-columns: 1fr;
+        gap: 34px;
+      }
+      .recruit-lead { font-size: 18px; }
+    }
+  </style>
 </head>
 <body>
-    <h1>Hello, GitHub.io!</h1>
-    <p>这是我的第一个个人网站。</p>
+
+  <header class="topbar">
+    <nav class="nav" aria-label="Primary navigation">
+      <a class="brand" href="#home">Guipeng Lan</a>
+      <div class="nav-links">
+        <a href="#home" class="active">Home</a>
+        <a href="#news">News</a>
+        <a href="#publications">Publications</a>
+        <a href="#special-issues">Special Issues</a>
+        <a href="#recruitment">Recruitment</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <!-- =======================================================
+         HOME / PERSONAL PROFILE
+         Replace assets/profile.jpg with your own portrait.
+         ======================================================= -->
+    <section class="hero" id="home">
+      <div class="container hero-grid">
+        <div class="portrait-wrap">
+          <img src="assets/profile.jpg" alt="Guipeng Lan" onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';" />
+          <div class="portrait-fallback" style="display:none;">GL</div>
+        </div>
+
+        <div>
+          <h1 class="hero-name">Guipeng Lan</h1>
+          <p class="hero-role">Researcher in Artificial Intelligence · Tianjin University</p>
+
+          <p class="hero-intro">
+            My research focuses on information-efficient learning and trustworthy artificial intelligence,
+            with interests spanning neural representation learning, multimodal intelligence, medical AI,
+            generative models, and model interpretability.
+          </p>
+
+          <div class="profile-links">
+            <a href="mailto:lgp@tju.edu.cn">Email</a>
+            <a href="#" target="_blank" rel="noopener">Google Scholar</a>
+            <a href="#" target="_blank" rel="noopener">ORCID</a>
+            <a href="#" target="_blank" rel="noopener">GitHub</a>
+          </div>
+
+          <div class="research-line">
+            <strong>Research interests:</strong>
+            Information-efficient AI · Multimodal learning · Medical imaging · Optimal transport · Generative AI · Explainable AI
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- NEWS -->
+    <section class="section gray" id="news">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="section-title">News</h2>
+          <p class="section-caption">Selected research, publication, project, and editorial updates.</p>
+        </div>
+        <div class="news-list" id="newsList"></div>
+        <div class="more-row">
+          <button class="text-button" id="newsToggle" type="button" hidden>Show more</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- PUBLICATIONS -->
+    <section class="section" id="publications">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="section-title">Publications</h2>
+          <p class="section-caption">
+            Selected publications. Graphical abstracts, paper links, code, and project pages can be added independently.
+          </p>
+        </div>
+
+        <div class="pub-tools">
+          <input id="pubSearch" class="pub-search" type="search" placeholder="Search publications" aria-label="Search publications" />
+          <div class="pub-filters" aria-label="Publication filters">
+            <button class="filter-btn active" data-filter="all" type="button">All</button>
+            <button class="filter-btn" data-filter="journal" type="button">Journal</button>
+            <button class="filter-btn" data-filter="conference" type="button">Conference</button>
+          </div>
+        </div>
+
+        <div class="publication-list" id="publicationList"></div>
+      </div>
+    </section>
+
+    <!-- SPECIAL ISSUES -->
+    <section class="section gray" id="special-issues">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="section-title">Special Issues</h2>
+          <p class="section-caption">Editorial activities and guest-edited special issues.</p>
+        </div>
+        <div class="si-list" id="specialIssueList"></div>
+      </div>
+    </section>
+
+    <!-- RECRUITMENT -->
+    <section class="section" id="recruitment">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="section-title">Recruitment</h2>
+          <p class="section-caption">For prospective students and research collaborators.</p>
+        </div>
+
+        <div class="recruit-grid">
+          <p class="recruit-lead">
+            I welcome students who are interested in artificial intelligence, computer vision,
+            multimodal learning, medical AI, and related topics. Applicants with strong motivation,
+            solid programming skills, and an interest in fundamental research are encouraged to get in touch.
+          </p>
+
+          <div class="recruit-meta">
+            <div class="recruit-row">
+              <strong>Research areas</strong>
+              Multimodal AI, medical imaging, representation learning, trustworthy AI
+            </div>
+            <div class="recruit-row">
+              <strong>What to send</strong>
+              CV, transcript, research interests, and representative work if available
+            </div>
+            <div class="recruit-row">
+              <strong>Contact</strong>
+              <a class="link" href="mailto:lgp@tju.edu.cn">lgp@tju.edu.cn</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <span>© <span id="year"></span> Guipeng Lan</span>
+      <span>Hosted on GitHub Pages · Last updated <span id="lastUpdated"></span></span>
+    </div>
+  </footer>
+
+  <script>
+    /* =========================================================
+       EDIT ONLY THE DATA BELOW TO GROW THE WEBSITE.
+       News / publications / special issues are rendered automatically.
+       ========================================================= */
+
+    const NEWS = [
+      {
+        date: "2026.09",
+        type: "Paper",
+        text: "A new paper has been accepted. Replace this sentence with your latest publication update."
+      },
+      {
+        date: "2026.08",
+        type: "Project",
+        text: "A new research project has been approved. Add the project title and funding agency here."
+      },
+      {
+        date: "2026.07",
+        type: "Service",
+        text: "New editorial or academic service activity."
+      },
+      {
+        date: "2026.06",
+        type: "Paper",
+        text: "Older news can stay in this array; the page can initially show only the latest items."
+      }
+    ];
+
+    const PUBLICATIONS = [
+      {
+        title: "A Deep Neural Network Optimization Framework Based on Optimal Transport Bridge Feature Selection and Sparse Representation",
+        year: "2026",
+        type: "journal",
+        venue: "IEEE Transactions on Neural Networks and Learning Systems",
+        shortVenue: "IEEE TNNLS",
+        authors: "Guipeng Lan, Shuai Xiao, Jiabao Wen, Jiachen Yang, Wen Lu, Baihua Li, Qinggang Meng, Xinbo Gao",
+        image: "assets/publications/tnnls2026.jpg",
+        links: {
+          paper: "#",
+          code: "",
+          project: ""
+        }
+      },
+      {
+        title: "Deep Neural Networks Internal Representation via Neuron Community Exploration",
+        year: "2025",
+        type: "journal",
+        venue: "IEEE Transactions on Emerging Topics in Computational Intelligence",
+        shortVenue: "IEEE TETCI",
+        authors: "Guipeng Lan, Shuai Xiao, Jiachen Yang, Wen Lu, Qinggang Meng, Xinbo Gao",
+        image: "assets/publications/tetci2025.jpg",
+        links: {
+          paper: "#",
+          code: "",
+          project: ""
+        }
+      },
+      {
+        title: "Image Aesthetics Assessment Based on Hypernetwork of Emotion Fusion",
+        year: "2023",
+        type: "journal",
+        venue: "IEEE Transactions on Multimedia",
+        shortVenue: "IEEE TMM",
+        authors: "Guipeng Lan, Shuai Xiao, Jiachen Yang, Yanshuang Zhou, Jiabao Wen, Wen Lu, Xinbo Gao",
+        image: "assets/publications/tmm2023.jpg",
+        links: {
+          paper: "#",
+          code: "",
+          project: ""
+        }
+      }
+    ];
+
+    const SPECIAL_ISSUES = [
+      {
+        journal: "Sensors",
+        status: "Open / Forthcoming",
+        title: "Advanced Artificial Intelligence for Medical Imaging and Intelligent Diagnosis",
+        team: "Guest Editors: Guipeng Lan; add the remaining Guest Editors here.",
+        link: "#"
+      },
+      {
+        journal: "Journal Name",
+        status: "Open / Closed",
+        title: "Add Another Special Issue Here",
+        team: "Guest Editors: Name A; Name B; Name C.",
+        link: "#"
+      }
+    ];
+
+    /* =========================================================
+       Rendering logic — normally no need to edit below this line.
+       ========================================================= */
+
+    const esc = (value = "") => String(value)
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+
+    // News: show the latest N items first, but keep the data expandable.
+    const NEWS_COLLAPSED_COUNT = 5;
+    let newsExpanded = false;
+
+    function renderNews() {
+      const list = document.getElementById("newsList");
+      const toggle = document.getElementById("newsToggle");
+      const items = newsExpanded ? NEWS : NEWS.slice(0, NEWS_COLLAPSED_COUNT);
+
+      list.innerHTML = items.map(item => `
+        <article class="news-item">
+          <div class="news-date">${esc(item.date)}</div>
+          <div class="news-text"><span class="news-type">${esc(item.type)}</span>${esc(item.text)}</div>
+        </article>
+      `).join("");
+
+      if (NEWS.length > NEWS_COLLAPSED_COUNT) {
+        toggle.hidden = false;
+        toggle.textContent = newsExpanded ? "Show less" : "Show more";
+      } else {
+        toggle.hidden = true;
+      }
+    }
+
+    document.getElementById("newsToggle").addEventListener("click", () => {
+      newsExpanded = !newsExpanded;
+      renderNews();
+    });
+
+    // Publications: searchable + filterable, with graphical abstract support.
+    let activeFilter = "all";
+    const searchInput = document.getElementById("pubSearch");
+    const filterButtons = [...document.querySelectorAll(".filter-btn")];
+
+    function imageMarkup(pub) {
+      if (!pub.image) return `<div class="pub-image-fallback">Graphical abstract</div>`;
+      return `
+        <img src="${esc(pub.image)}" alt="Graphical abstract for ${esc(pub.title)}"
+             loading="lazy"
+             onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';" />
+        <div class="pub-image-fallback" style="display:none;">Graphical abstract<br>${esc(pub.shortVenue || pub.year)}</div>
+      `;
+    }
+
+    function linkMarkup(links = {}) {
+      const labels = { paper: "Paper", code: "Code", project: "Project", doi: "DOI" };
+      return Object.entries(links)
+        .filter(([, url]) => url)
+        .map(([key, url]) => `<a href="${esc(url)}" target="_blank" rel="noopener">${esc(labels[key] || key)}</a>`)
+        .join("");
+    }
+
+    function renderPublications() {
+      const q = searchInput.value.trim().toLowerCase();
+      const list = document.getElementById("publicationList");
+
+      const filtered = PUBLICATIONS.filter(pub => {
+        const typeOK = activeFilter === "all" || pub.type === activeFilter;
+        const haystack = [pub.title, pub.year, pub.venue, pub.shortVenue, pub.authors]
+          .join(" ")
+          .toLowerCase();
+        return typeOK && (!q || haystack.includes(q));
+      });
+
+      if (!filtered.length) {
+        list.innerHTML = `<div class="empty-state">No publications match the current search.</div>`;
+        return;
+      }
+
+      list.innerHTML = filtered.map(pub => `
+        <article class="publication">
+          <div class="pub-image">${imageMarkup(pub)}</div>
+          <div>
+            <p class="pub-kicker">${esc(pub.shortVenue || pub.venue)} · ${esc(pub.year)}</p>
+            <h3 class="pub-title">${esc(pub.title)}</h3>
+            <p class="pub-authors">${esc(pub.authors)}</p>
+            <p class="pub-venue">${esc(pub.venue)}</p>
+            <div class="pub-links">${linkMarkup(pub.links)}</div>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    searchInput.addEventListener("input", renderPublications);
+    filterButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        filterButtons.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        activeFilter = btn.dataset.filter;
+        renderPublications();
+      });
+    });
+
+    // Special issues: simple editorial list, scalable by appending data objects.
+    function renderSpecialIssues() {
+      const list = document.getElementById("specialIssueList");
+      list.innerHTML = SPECIAL_ISSUES.map(si => `
+        <article class="si-item">
+          <div>
+            <div class="si-journal">${esc(si.journal)}</div>
+            <div class="si-status">${esc(si.status)}</div>
+          </div>
+          <div>
+            <h3 class="si-title">${esc(si.title)}</h3>
+            <p class="si-team">${esc(si.team)}</p>
+            ${si.link ? `<a href="${esc(si.link)}" target="_blank" rel="noopener">Special issue page ↗</a>` : ""}
+          </div>
+        </article>
+      `).join("");
+    }
+
+    // Lightweight active navigation.
+    const navLinks = [...document.querySelectorAll(".nav-links a")];
+    const observedSections = [...document.querySelectorAll("main section")];
+
+    const sectionObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        navLinks.forEach(link => {
+          link.classList.toggle("active", link.getAttribute("href") === `#${entry.target.id}`);
+        });
+      });
+    }, { rootMargin: "-35% 0px -55% 0px", threshold: 0 });
+
+    observedSections.forEach(section => sectionObserver.observe(section));
+
+    document.getElementById("year").textContent = new Date().getFullYear();
+    document.getElementById("lastUpdated").textContent = new Date().toLocaleDateString("en-US", {
+      year: "numeric", month: "short"
+    });
+
+    renderNews();
+    renderPublications();
+    renderSpecialIssues();
+  </script>
 </body>
 </html>
