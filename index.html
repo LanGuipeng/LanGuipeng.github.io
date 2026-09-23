@@ -730,7 +730,7 @@
         type: "journal",
         venue: "IEEE Transactions on Neural Networks and Learning Systems",
         shortVenue: "IEEE TNNLS",
-        authors: "<span style="font-weight:bold;">Guipeng Lan</span>, Shuai Xiao, Jiabao Wen, Jiachen Yang, Wen Lu, Baihua Li, Qinggang Meng, Xinbo Gao",
+        authors: "Guipeng Lan, Shuai Xiao, Jiabao Wen, Jiachen Yang, Wen Lu, Baihua Li, Qinggang Meng, Xinbo Gao",
         image: "assets/publications/tnnls2026.jpg",
         links: {
           paper: "#",
@@ -848,6 +848,18 @@
         .join("");
     }
 
+
+    function renderAuthors(authors) {
+      return authors
+      .split(", ")
+      .map(author =>
+        author === "Guipeng Lan"
+          ? `<strong>${escapeHTML(author)}</strong>`
+          : escapeHTML(author)
+        )
+      .join(", ");
+    }
+    
     function renderPublications() {
       const q = searchInput.value.trim().toLowerCase();
       const list = document.getElementById("publicationList");
@@ -871,7 +883,7 @@
           <div>
             <p class="pub-kicker">${esc(pub.shortVenue || pub.venue)} · ${esc(pub.year)}</p>
             <h3 class="pub-title">${esc(pub.title)}</h3>
-            <p class="pub-authors">${esc(pub.authors)}</p>
+            <div class="pub-authors">${renderAuthors(pub.authors)}</div>
             <p class="pub-venue">${esc(pub.venue)}</p>
             <div class="pub-links">${linkMarkup(pub.links)}</div>
           </div>
