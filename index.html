@@ -849,57 +849,76 @@
     }
 
 
-    function renderAuthors(authors) {
-      return authors
-      .split(", ")
-      .map(author =>
-        author === "Guipeng Lan"
-          ? `<strong>${escapeHTML(author)}</strong>`
-          : escapeHTML(author)
-        )
-      .join(", ");
-    }
-    
-    function renderPublications() {
-      const q = searchInput.value.trim().toLowerCase();
-      const list = document.getElementById("publicationList");
+function renderAuthors(authors) {
+  return authors
+    .split(/\s*,\s*/)
+    .map(author =>
+      author === "Guipeng Lan"
+        ? `<strong>${esc(author)}</strong>`
+        : esc(author)
+    )
+    .join(", ");
+}
 
-      const filtered = PUBLICATIONS.filter(pub => {
-        const typeOK = activeFilter === "all" || pub.type === activeFilter;
-        const haystack = [pub.title, pub.year, pub.venue, pub.shortVenue, pub.authors]
-          .join(" ")
-          .toLowerCase();
-        return typeOK && (!q || haystack.includes(q));
-      });
+function renderPublications() {
+  const q = searchInput.value.trim().toLowerCase();
+  const list = document.getElementById("publicationList");
 
-      if (!filtered.length) {
-        list.innerHTML = `<div class="empty-state">No publications match the current search.</div>`;
-        return;
-      }
+  const filtered = PUBLICATIONS.filter(pub => {
+    const typeOK = activeFilter === "all" || pub.type === activeFilter;
+    const haystack = [
+      pub.title,
+      pub.year,
+      pub.venue,
+      pub.shortVenue,
+      pub.authors
+    ]
+      .join(" ")
+      .toLowerCase();
 
-      list.innerHTML = filtered.map(pub => `
-        <article class="publication">
-          <div class="pub-image">${imageMarkup(pub)}</div>
-          <div>
-            <p class="pub-kicker">${esc(pub.shortVenue || pub.venue)} · ${esc(pub.year)}</p>
-            <h3 class="pub-title">${esc(pub.title)}</h3>
-            <div class="pub-authors">${renderAuthors(pub.authors)}</div>
-            <p class="pub-venue">${esc(pub.venue)}</p>
-            <div class="pub-links">${linkMarkup(pub.links)}</div>
-          </div>
-        </article>
-      `).join("");
-    }
+    return typeOK && (!q || haystack.includes(q));
+  });
 
-    searchInput.addEventListener("input", renderPublications);
-    filterButtons.forEach(btn => {
-      btn.addEventListener("click", () => {
-        filterButtons.forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-        activeFilter = btn.dataset.filter;
-        renderPublications();
-      });
-    });
+  if (!filtered.length) {
+    list.innerHTML =
+      `<div class="empty-state">No publications match the current search.</div>`;
+    return;
+  }
+
+  list.innerHTML = filtered.map(pub => `
+    <article class="publication">
+      <div class="pub-image">${imageMarkup(pub)}</div>
+      <div>
+        <p class="pub-kicker">
+          ${esc(pub.shortVenue || pub.venue)} · ${esc(pub.year)}
+        </p>
+
+        <h3 class="pub-title">${esc(pub.title)}</h3>
+
+        <div class="pub-authors">
+          ${renderAuthors(pub.authors)}
+        </div>
+
+        <p class="pub-venue">${esc(pub.venue)}</p>
+
+        <div class="pub-links">
+          ${linkMarkup(pub.links)}
+        </div>
+      </div>
+    </article>
+  `).join("");
+}
+
+searchInput.addEventListener("input", renderPublications);
+
+filterButtons.forEach(btn => {
+  btn.addEventListener("click", () => {
+    filterButtons.forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    activeFilter = btn.dataset.filter;
+    renderPublications();
+  });
+});
 
     // Special issues: simple editorial list, scalable by appending data objects.
     function renderSpecialIssues() {
